@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Updates</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-logo">Header Logo</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Header link one</a></li>
+                <li><a href="dynamic-content.html">Header link two</a></li>
+                <li><a href="weather.html">Header link three</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="weather-section">
+        <h2>Current Weather in Major Cities</h2>
+        <ul id="weather-list">
+            <li>Oslo: <span id="oslo-weather">Loading...</span></li>
+            <li>Bergen: <span id="bergen-weather">Loading...</span></li>
+            <li>Stavanger: <span id="stavanger-weather">Loading...</span></li>
+            <li>Trondheim: <span id="trondheim-weather">Loading...</span></li>
+            <li>Tromsø: <span id="tromso-weather">Loading...</span></li>
+        </ul>
+    </section>
+    <footer>
+        <p>Copyright © 2024 Norway Info Site</p>
+    </footer>
+    <script>
+        function fetchWeatherData(city, lat, lon, elementId) {
+            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById(elementId).innerText = `${data.current_weather.temperature}°C`;
+                });
+        }
+
+        function updateWeather() {
+            fetchWeatherData('Oslo', 59.91, 10.75, 'oslo-weather');
+            fetchWeatherData('Bergen', 60.39, 5.32, 'bergen-weather');
+            fetchWeatherData('Stavanger', 58.97, 5.73, 'stavanger-weather');
+            fetchWeatherData('Trondheim', 63.43, 10.39, 'trondheim-weather');
+            fetchWeatherData('Tromsø', 69.65, 18.96, 'tromso-weather');
+        }
+
+        window.onload = function() {
+            updateWeather();
+            setInterval(updateWeather, 60000); // Refresh every minute
+        };
+    </script>
+</body>
+</html>
